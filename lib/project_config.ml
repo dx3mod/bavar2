@@ -4,8 +4,8 @@ type t = {
   layout : layout;
 }
 
-and target = { mcu : string; freq : freqency }
-and freqency = Any | Hz of int
+and target = { mcu : string; freq : frequency }
+and frequency = Any | Hz of int
 and build_profile = Debug | Release
 
 and layout = {
