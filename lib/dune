@@ -1,0 +1,5 @@
+(library
+ (name bavar2)
+ (libraries unix globlon)
+ (preprocess
+  (pps ppx_deriving.make)))

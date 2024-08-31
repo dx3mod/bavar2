@@ -1,3 +1,4 @@
 (executable
  (public_name bavar2)
- (name main))
+ (name main)
+ (libraries bavar2))

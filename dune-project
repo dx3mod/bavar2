@@ -7,7 +7,6 @@
 (source
  (github dx3mod/bavar2))
 
-
 (authors "Mikhail Lopatin <dx3mod@bk.ru>")
 
 (maintainers "Mikhail Lopatin <dx3mod@bk.ru>")
