@@ -15,7 +15,7 @@ let resolve ~root_dir ~(config : Project_config.t) =
       [ "*.c"; "**/*.c"; "*.cpp"; "*.cxx"; "**/*.cpp"; "**/*.cxx" ]
   in
 
-  Project.
+  Project_unit.
     {
       root_dir;
       source_files;
