@@ -1,6 +1,7 @@
-type t = { target : target option; layout : layout }
-and target = { mcu : string; freq : frequency [@default Any] }
+type t = { target : target; layout : layout }
+and target = { mcu : mcu; freq : frequency [@default Any] }
 and frequency = Any | Hz of int
+and mcu = Any | Mcu of string
 
 and layout = {
   source_dir : string; [@default "src/"]
@@ -18,7 +19,6 @@ module Decoders = struct
 
   let target_decoder =
     let frequency_of_string s =
-      (** chop [suffix str] *)
       let chop suffix s =
         String.sub s 0 (String.length s - String.length suffix)
       in
@@ -29,16 +29,25 @@ module Decoders = struct
       else failwith "invalid frequency value"
     in
 
+    let mcu_of_string : string -> mcu = function
+      | "_" -> Any
+      | mcu -> Mcu mcu
+    in
+
     D.value >>= function
-    | Sexp.(List [ Atom mcu ] | Atom mcu) -> make_target ~mcu () |> D.succeed
+    | Sexp.(List [ Atom mcu ] | Atom mcu) ->
+        make_target ~mcu:(mcu_of_string mcu) () |> D.succeed
     | Sexp.(List [ Atom mcu; Atom freq ]) -> (
         try
-          make_target ~mcu ~freq:(Hz (frequency_of_string freq)) () |> D.succeed
+          let freq : frequency =
+            if freq = "_" then Any else Hz (frequency_of_string freq)
+          in
+          make_target ~mcu:(mcu_of_string mcu) ~freq () |> D.succeed
         with _ -> D.fail "failed to decode frequency value")
     | _ -> D.fail "empty target stanza"
 
   let config_decoder =
-    let* target = D.field_opt "target" target_decoder in
+    let* target = D.field "target" target_decoder in
 
     D.succeed { target; layout = make_layout () }
 end
