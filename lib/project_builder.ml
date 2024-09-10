@@ -1,5 +1,5 @@
 (** Compiler options builder. *)
-module Options_builder = struct
+module Compiler_options_builder = struct
   type t = string list
 
   open Printf
