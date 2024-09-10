@@ -12,6 +12,14 @@ and layout = {
 }
 [@@deriving make]
 
+let option_of_mcu : mcu -> string option = function
+  | Any -> None
+  | Mcu mcu -> Some mcu
+
+let option_of_hz : frequency -> int option = function
+  | Any -> None
+  | Hz hz -> Some hz
+
 module Decoders = struct
   module D = Decoders_sexplib.Decode
   open D.Infix
