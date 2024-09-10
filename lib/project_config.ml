@@ -18,6 +18,7 @@ module Decoders = struct
 
   let target_decoder =
     let frequency_of_string s =
+      (** chop [suffix str] *)
       let chop suffix s =
         String.sub s 0 (String.length s - String.length suffix)
       in
