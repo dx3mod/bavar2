@@ -62,9 +62,10 @@ end
 
 let of_sexp (sexp : Sexplib.Sexp.t) =
   Decoders.D.decode_value Decoders.config_decoder Sexplib.Sexp.(List [ sexp ])
-  |> Result.map_error Decoders.D.string_of_error
+  |> Result.fold ~ok:Fun.id ~error:(fun e ->
+         failwith @@ Decoders.D.string_of_error e)
 
 let load filename =
   let buf = Bytes.create 200 in
   try Sexplib.Sexp.load_sexp ~buf filename |> of_sexp
-  with Failure msg -> Error msg
+  with Failure msg -> failwith @@ "Failed to load project config!\n  " ^ msg

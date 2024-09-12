@@ -31,11 +31,11 @@ module Compiler_options_builder = struct
   let headers = Fun.compose raws @@ List.map (sprintf "-I%s")
 end
 
-let firmware_options ~(proj_unit : Project_unit.t) ~(config : Project_config.t)
-    =
+let firmware_options ~output_path ~(proj_unit : Project_unit.t)
+    ~(config : Project_config.t) =
   let open Compiler_options_builder in
   empty
-  |> output (Filename.concat config.layout.build_dir "firmware.elf")
+  |> output (Filename.concat output_path "firmware.elf")
   |> files proj_unit.source_files
   |> header proj_unit.root_dir
   |> headers proj_unit.include_dirs
